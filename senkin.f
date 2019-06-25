@@ -431,6 +431,10 @@ C
 C
       DATA ISEN /5*0/, INFO /15*0/, DTLIM / 400. /, NOSAV /1/
 C
+C       SET PARAMETERS FOR RADICAL ADDITION
+C
+      TADD = 1E-2
+C
 C       SET PARAMETERS FOR DASAC
 C
       INFO(3) = 1
@@ -517,6 +521,18 @@ C
       TPRINT = DTOUT + TIM
       IFLG = 0
 250   CONTINUE
+! C-------------------- Radical Addition       --------------------C
+! C-------------------- 20190625               --------------------C
+! C-------------------- Edit by Akira Shioyoke --------------------C
+!       IF (TIM .GE. TADD) THEN
+!             ! WRITE (LIGN, '(A10)') KSYM(1), KSYM(2)
+!             WRITE (LIGN, '(A)') ' Radical is added'
+!             WRITE (LOUT, '(A)') ' Radical is added'
+!             ZP(2, 1) = ZP(2, 1) + 1E-0
+!             TADD = 1E10
+!       END IF
+! C-------------------- END Radical Addition   --------------------C
+
 C
 C         CALL THE O.D.E. SOLVER
 C
