@@ -478,6 +478,26 @@ C
       IF (LSENS) WRITE (LSAVE) (( Z(I,J), I=1,NSYS), J = 2, II+1)
       WRITE (LOUT, '(//A/)') '  Time Integration:'
       WRITE (LIGN, '(//A/)') '  Time Integration:'
+C
+C       WRITE DATASHEET TOP LOW
+C
+      NPL = 100
+      NPRINT = KK / NPL
+      R = MOD(KK,NPL)
+      IF (R .NE. 0.) NPRINT = NPRINT + 1
+      
+      WRITE (LIGN, 7720)
+      DO 30 J = 1, NPRINT
+         IMIN = NPL*(J-1) + 1
+         IMAX = IMIN + NPL-1
+         IMAX = MIN (IMAX, KK)
+         WRITE (LIGN, 7730) (KSYM(I), I = IMIN, IMAX)
+30    CONTINUE
+ 7720 FORMAT(/,' t(sec)     P(atm)     T(K)    ', $)
+ 7730 FORMAT(100(2X,A10, $))
+C
+C       WRITE DATASHEET FIRST LOW
+C 
       CALL TEXT13 (IPAR, KK, KSYM, LIGN, LOUT,
      1             P, PATM, RPAR, TIM, XMOL, Z)
 C
@@ -1434,7 +1454,7 @@ C*****END precision > single
 C
       DIMENSION Z(*), RPAR(*), IPAR(*), XMOL(*)
       CHARACTER KSYM(*)*(*)
-      DATA NPL /3/
+      DATA NPL /100/
 C
 C       COMPUTE MOLE FRACTIONS
 C
@@ -1452,17 +1472,17 @@ C     1 'Time (sec) = ', TIM, 'T (K) = ', Z(1)
 C*****END vax vms
 C
       PA = P / PATM
+
       WRITE (LIGN, 7700) TIM, PA, Z(1)
-      DO 30 J = 1, NPRINT
+      DO 40 J = 1, NPRINT
          IMIN = NPL*(J-1) + 1
          IMAX = IMIN + NPL-1
          IMAX = MIN (IMAX, KK)
-         WRITE (LIGN, 7710)  (KSYM(I), XMOL(I), I = IMIN, IMAX)
-30    CONTINUE
+         WRITE (LIGN, 7710)  (XMOL(I), I = IMIN, IMAX)
+40    CONTINUE
 C
- 7700 FORMAT(/,' t(sec) =',1PE11.4,'   P(atm) =',1PE11.4,
-     1'   T(K) =',1PE11.4)
- 7710 FORMAT(4(2X,A10,' =',1PE9.2))
+ 7700 FORMAT(/, 1PE11.4, 1PE11.4 ,1PE11.4, $)
+ 7710 FORMAT(100(2X, 1PE11.4, $))
       RETURN
       END
 C
