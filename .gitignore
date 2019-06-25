@@ -1,0 +1,9 @@
+*.o
+ckinterpe
+senkine
+skout
+ckout
+terminalout
+cklink
+log.*
+save
