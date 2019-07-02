@@ -434,6 +434,14 @@ C
 C       SET PARAMETERS FOR RADICAL ADDITION
 C
       TADD = 1E-2
+      YADD = 1E-1
+C
+C       SET OUTPUT FILE FOR USER COMFORMATION
+C
+      LUSR = 11
+      OPEN (LUSR, FORM='FORMATTED', FILE = 'usrout')
+      WRITE (LUSR, *) "Initial value of Z array"
+      WRITE (LUSR, *) (Z(I,1), I = 1, NSYS)
 C
 C       SET PARAMETERS FOR DASAC
 C
@@ -521,17 +529,28 @@ C
       TPRINT = DTOUT + TIM
       IFLG = 0
 250   CONTINUE
-! C-------------------- Radical Addition       --------------------C
-! C-------------------- 20190625               --------------------C
-! C-------------------- Edit by Akira Shioyoke --------------------C
-!       IF (TIM .GE. TADD) THEN
-!             ! WRITE (LIGN, '(A10)') KSYM(1), KSYM(2)
-!             WRITE (LIGN, '(A)') ' Radical is added'
-!             WRITE (LOUT, '(A)') ' Radical is added'
-!             ZP(2, 1) = ZP(2, 1) + 1E-0
-!             TADD = 1E10
-!       END IF
-! C-------------------- END Radical Addition   --------------------C
+C-------------------- Radical Addition       --------------------C
+C-------------------- 20190625               --------------------C
+C-------------------- Edit by Akira Shioyoke --------------------C
+      IF (TIM .GE. TADD) THEN
+            ! CHECK INSIDE Z ARRAY BEFOR CHANGING
+            WRITE (LUSR, *) "The value of Z array"
+            WRITE (LUSR, *) (Z(I,1), I = 1, NSYS)
+
+            ! WRITE (LIGN, '(A10)') KSYM(1), KSYM(2)
+            WRITE (LIGN, '(A)') ' Radical is added'
+            WRITE (LOUT, '(A)') ' Radical is added'   
+            WRITE (LUSR, '(A)') ' Radical is added' 
+            ! C7H17 => C7H15a + 
+            Z(2, 1) = Z(2, 1) - YADD
+            Z(3, 1) = Z(3, 1) + YADD
+            Z(327, 1) = Z(327, 1) + YADD            
+
+            ! CHECK INSIDE Z ARRAY AFTER CHANGING
+            WRITE (LUSR, *) (Z(I,1), I = 1, NSYS)
+            TADD = 1E10
+      END IF
+C-------------------- END Radical Addition   --------------------C
 
 C
 C         CALL THE O.D.E. SOLVER
