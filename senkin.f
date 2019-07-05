@@ -541,7 +541,7 @@ C-------------------- Edit by Akira Shioyoke --------------------C
             WRITE (LIGN, '(A)') ' Radical is added'
             WRITE (LOUT, '(A)') ' Radical is added'   
             WRITE (LUSR, '(A)') ' Radical is added' 
-            ! C7H17 => C7H15a + 
+            ! C7H16 => C7H15a + H
             Z(2, 1) = Z(2, 1) - YADD
             Z(3, 1) = Z(3, 1) + YADD
             Z(327, 1) = Z(327, 1) + YADD            
